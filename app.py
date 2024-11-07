@@ -86,7 +86,7 @@ def userlog():
             r = ""
             for row in c.fetchall():
                 print(row)
-                r += str(row) + <br>
+                r += str(row) + "<br>"
 
         return render_template("userlog.html", r=r)
 
