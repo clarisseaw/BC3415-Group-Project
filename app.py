@@ -61,12 +61,9 @@ def userlog():
     for row in c:
         print(row)
         r = r + str(row)
-    q = request.form.get("q")
     currentDateTime = datetime.datetime.now()
     currentDateTime
-    conn = sqlite3.connect('userlog.db')
-    c = conn.cursor()
-    c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(q,currentDateTime))
+    c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(username,currentDateTime))
     conn.commit()
     c.close()
     conn.close()
