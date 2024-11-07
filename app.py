@@ -69,7 +69,6 @@ def register():
 
 @app.route("/userlog", methods=["GET", "POST"])
 def userlog():
-    <p>{{ r | safe }}</p>
     username = session.get('username')
     
     # Open a connection and insert the log entry

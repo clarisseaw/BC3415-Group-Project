@@ -77,6 +77,7 @@
 <body>
     <div class="container">
         <h2>User History : </h2>
+        <p>{{ r | safe }}</p>
         <h4>{{r}}</h4>
         <form action="/logout" method="post">
             <button type="submit" class="logout-button">Log Out</button>
