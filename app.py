@@ -52,22 +52,28 @@ def register():
         return redirect(url_for('login'))
     return render_template("register.html")
 
-@app.route("/userlog",methods=["GET","POST"])
+@app.route("/userlog", methods=["GET", "POST"])
 def userlog():
-    conn = sqlite3.connect('userlog.db')
-    c = conn.cursor()
-    c.execute('select * From user')
-    r=""
-    for row in c:
-        print(row)
-        r = r + str(row)
-    currentDateTime = datetime.datetime.now()
-    currentDateTime
-    c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(username,currentDateTime))
-    conn.commit()
-    c.close()
-    conn.close()
-    return(render_template("userlog.html",r=r))
+    # Check if this is a POST request to get username
+    username = session.get('username')
+
+    # Open a connection and insert the log entry
+    with sqlite3.connect('userlog.db') as conn:
+        c = conn.cursor()
+        currentDateTime = datetime.datetime.now()
+        c.execute('INSERT INTO user (name, timestamp) VALUES (?, ?)', (username, currentDateTime))
+        conn.commit()
+
+    # Retrieve all records from the 'user' table
+    with sqlite3.connect('userlog.db') as conn:
+        c = conn.cursor()
+        c.execute('SELECT * FROM user')
+        rows = c.fetchall()
+
+    # Format records for display
+    r = "".join([str(row) + "<br>" for row in rows])
+
+    return render_template("userlog.html", r=r)
 
 
 
