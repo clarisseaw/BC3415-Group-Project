@@ -72,6 +72,15 @@ def index():
     if username in users:
         display_name = users[username]['name']
         return render_template("index.html", username=display_name) 
+    q = request.form.get("q")
+    currentDateTime = datetime.datetime.now()
+    currentDateTime
+    conn = sqlite3.connect('userlog.db')
+    c = conn.cursor()
+    c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(q,currentDateTime))
+    conn.commit()
+    c.close()
+    conn.close()
     return redirect(url_for('login'))
 
 @app.route("/transfer",methods=["GET","POST"])
@@ -108,7 +117,6 @@ def expense():
             session['expenses'][date][category] = amount
 
         return redirect(url_for('summary'))
-
     return render_template("expense.html")
 
 @app.route("/summary", methods=["GET", "POST"])
