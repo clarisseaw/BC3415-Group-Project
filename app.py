@@ -81,11 +81,14 @@ def userlog():
     # Retrieve all records from the 'user' table
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
-        c.execute('SELECT * FROM user WHERE name = ?', (username))
+        c.execute('SELECT * FROM user')
         r = ""
         for row in c.fetchall():
-            print(row)
-            r += str(row) + "<br>"
+            # Check if the log entry belongs to the logged-in user
+            if row[0] == username:  # row[0] is the username in the log
+                print(row)  # Print the log entry in the console for debugging
+                r += f"User: {row[0]}, Timestamp: {row[1]}<br>"  # Display the log on the webpage
+
 
     return render_template("userlog.html", r=r)
 
