@@ -69,26 +69,26 @@ def register():
 
 @app.route("/userlog", methods=["GET", "POST"])
 def userlog():
-    try:
-        username = session.get('username')
-        
-        # Open a connection and insert the log entry
-        with sqlite3.connect('userlog.db') as conn:
-            c = conn.cursor()
-            currentDateTime = datetime.datetime.now()
-            c.execute('INSERT INTO user (name, timestamp) VALUES (?, ?)', (username, currentDateTime))
-            conn.commit()
+    <p>{{ r | safe }}</p>
+    username = session.get('username')
+    
+    # Open a connection and insert the log entry
+    with sqlite3.connect('userlog.db') as conn:
+        c = conn.cursor()
+        currentDateTime = datetime.datetime.now()
+        c.execute('INSERT INTO user (name, timestamp) VALUES (?, ?)', (username, currentDateTime))
+        conn.commit()
 
-        # Retrieve all records from the 'user' table
-        with sqlite3.connect('userlog.db') as conn:
-            c = conn.cursor()
-            c.execute('SELECT * FROM user')
-            r = ""
-            for row in c.fetchall():
-                print(row)
-                r += str(row) + "<br>"
+    # Retrieve all records from the 'user' table
+    with sqlite3.connect('userlog.db') as conn:
+        c = conn.cursor()
+        c.execute('SELECT * FROM user')
+        r = ""
+        for row in c.fetchall():
+            print(row)
+            r += str(row) + "<br>"
 
-        return render_template("userlog.html", r=r)
+    return render_template("userlog.html", r=r)
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
