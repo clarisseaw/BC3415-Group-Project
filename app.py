@@ -21,7 +21,7 @@ Session(app)
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form.get("q")
+        username = request.form.get("username")
         password = request.form.get("password").encode('utf-8')
         currentDateTime = datetime.datetime.now()
         currentDateTime
@@ -29,6 +29,8 @@ def login():
         c = conn.cursor()
         c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(username,currentDateTime))
         conn.commit()
+        c.close()
+        conn.close()
         for user, data in users.items():
             if data['name'] == username:
                 if bcrypt.checkpw(password, data['password']):
