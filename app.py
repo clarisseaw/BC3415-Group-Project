@@ -81,10 +81,10 @@ def userlog():
     # Retrieve all records from the 'user' table
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
-        c.execute('SELECT * FROM user')
+        c.execute('SELECT * FROM user WHERE name = ?', (username,))
         r = ""
         for row in c.fetchall():
-            print(f"User: {row[0]}, Timestamp: {row[1]}")
+            print(row)
             r += str(row) + "<br>"
 
     return render_template("userlog.html", r=r)
