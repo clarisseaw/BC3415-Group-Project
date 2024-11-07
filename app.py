@@ -81,7 +81,7 @@ def userlog():
     # Retrieve all records from the 'user' table
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
-        c.execute('SELECT * FROM user WHERE name = ?', (username,))
+        c.execute('SELECT * FROM user WHERE name = ?', (username))
         r = ""
         for row in c.fetchall():
             print(row)
