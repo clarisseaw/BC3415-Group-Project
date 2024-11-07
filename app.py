@@ -85,8 +85,10 @@ def userlog():
 
         # Loop through all logs and filter only the current user's logs
         for row in logs:
-            if row[0] == username:  # Only show logs where the username matches
+            if row[1] == username:  # Only show logs where the username matches
                 print(row) 
+                r += str(row) + "<br>"
+            else:
                 r += str(row) + "<br>"
 
     return render_template("userlog.html", r=r)
