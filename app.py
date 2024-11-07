@@ -88,7 +88,7 @@ def userlog():
             print(row)
             r += str(row) + "<br>"
 
-    return render_template("userlog.html", r=r)
+    return redirect(url_for('index'))
 
 
 
