@@ -84,7 +84,7 @@ def userlog():
         c.execute('SELECT * FROM user')
         r = ""
         for row in c.fetchall():
-            if row[0] = username:
+            if row[0] == username:
                 print(row)
                 r += str(row) + "<br>"
             else:
