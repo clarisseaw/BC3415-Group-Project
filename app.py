@@ -4,7 +4,8 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 import google.generativeai as genai
 import os
-
+import sqlite3
+import datetime
 api = os.getenv("MAKERSUITE_API_TOKEN")
 genai.configure(api_key=api)
 model = genai.GenerativeModel("gemini-1.5-flash")
@@ -50,6 +51,19 @@ def register():
         session['username'] = username  
         return redirect(url_for('login'))
     return render_template("register.html")
+
+@app.route("/userlog",methods=["GET","POST"])
+def userlog():
+    conn = sqlite3.connect('userlog.db')
+    c = conn.cursor()
+    c.execute('select * From user')
+    r=""
+    for row in c:
+        print(row)
+        r = r + str(row)
+    c.close()
+    conn.close()
+    return(render_template("userlog.html",r=r))
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
