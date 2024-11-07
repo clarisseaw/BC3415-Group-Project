@@ -24,8 +24,9 @@ def create_user_table():
         c.execute('''
             CREATE TABLE IF NOT EXISTS user (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                timestamp TEXT NOT NULL
+                username TEXT NOT NULL,
+                action TEXT NOT NULL,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
         conn.commit()
@@ -74,22 +75,20 @@ def userlog():
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
         currentDateTime = datetime.datetime.now()
-        c.execute('INSERT INTO user (name, timestamp) VALUES (?, ?)', (username, currentDateTime))
+        c.execute('INSERT INTO userlog (username, action, timestamp) VALUES (?, ?, ?)', 
+        (username, "viewed_money_transfer", currentDateTime))
         conn.commit()
+        for action in actions:
+            print(f"Action: {action[0]}, Timestamp: {action[1]}")
 
     # Retrieve all records from the 'user' table
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
         c.execute('SELECT * FROM user')
-        logs = c.fetchall()
-
-        # Loop through all logs and filter only the current user's logs
-        for row in logs:
-            if row[1] == username:  # Only show logs where the username matches
-                print(row) 
-                r += str(row) + "<br>"
-            else:
-                r += str(row) + "<br>"
+        r = ""
+        for row in c.fetchall():
+            print(row)
+            r += str(row) + "<br>"
 
     return render_template("userlog.html", r=r)
 
