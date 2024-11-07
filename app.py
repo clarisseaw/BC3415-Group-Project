@@ -73,6 +73,7 @@ def userlog():
         for row in c:
             print(row)
             r = r + str(row)
+        conn.commit()
 
     return render_template("userlog.html", r=r)
 
