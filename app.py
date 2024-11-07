@@ -21,8 +21,14 @@ Session(app)
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form.get("username")
+        username = request.form.get("q")
         password = request.form.get("password").encode('utf-8')
+        currentDateTime = datetime.datetime.now()
+        currentDateTime
+        conn = sqlite3.connect('userlog.db')
+        c = conn.cursor()
+        c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(username,currentDateTime))
+        conn.commit()
         for user, data in users.items():
             if data['name'] == username:
                 if bcrypt.checkpw(password, data['password']):
@@ -69,17 +75,7 @@ def index():
 
     if username in users:
         display_name = users[username]['name']
-        
-        q = request.form.get("q")
-        currentDateTime = datetime.datetime.now()
-        currentDateTime
-        conn = sqlite3.connect('userlog.db')
-        c = conn.cursor()
-        c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(q,currentDateTime))
-        conn.commit()
-        c.close()
-        conn.close()
-        return render_template("index.html", username=display_name)
+        return render_template("index.html", username=display_name)        
     return redirect(url_for('login'))
 
 @app.route("/transfer",methods=["GET","POST"])
