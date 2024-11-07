@@ -59,24 +59,27 @@ def userlog():
         if not username:
             return "Username not found", 400
         
+        # Open a connection and insert the log entry
         with sqlite3.connect('userlog.db') as conn:
             c = conn.cursor()
             currentDateTime = datetime.datetime.now()
             c.execute('INSERT INTO user (name, timestamp) VALUES (?, ?)', (username, currentDateTime))
             conn.commit()
 
+        # Retrieve all records from the 'user' table
         with sqlite3.connect('userlog.db') as conn:
             c = conn.cursor()
             c.execute('SELECT * FROM user')
             r = ""
-            for row in c:
+            for row in c.fetchall():
                 print(row)
-                r = r + str(row)
-        
+                r += str(row) + "<br>"
+
         return render_template("userlog.html", r=r)
     except Exception as e:
-        print("Error in userlog:", e)
-        return "An error occurred in userlog.", 500
+        print("Error in userlog:", e)  # This will show the specific error message in your console or logs
+        return f"An error occurred in userlog: {e}", 500
+
 
 
 
