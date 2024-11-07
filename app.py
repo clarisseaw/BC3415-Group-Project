@@ -61,10 +61,6 @@ def userlog():
     for row in c:
         print(row)
         r = r + str(row)
-    return(render_template("userlog.html",r=r))
-
-@app.route("/main",methods=["GET","POST"])
-def main():
     q = request.form.get("q")
     currentDateTime = datetime.datetime.now()
     currentDateTime
@@ -74,7 +70,9 @@ def main():
     conn.commit()
     c.close()
     conn.close()
-    return(render_template("main.html"))
+    return(render_template("userlog.html",r=r))
+
+
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
