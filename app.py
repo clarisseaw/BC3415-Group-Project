@@ -61,22 +61,19 @@ def userlog():
     for row in c:
         print(row)
         r = r + str(row)
-    q = request.form.get("q")
-    currentDateTime = datetime.datetime.now()
-    currentDateTime
-    c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(q,currentDateTime))
-    conn.commit()
-    c.close()
-    conn.close()
     return(render_template("userlog.html",r=r))
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
-    username = session.get('username')
-
-    if username in users:
-        display_name = users[username]['name']
-        return render_template("index.html", username=display_name) 
+    q = request.form.get("q")
+    currentDateTime = datetime.datetime.now()
+    currentDateTime
+    conn = sqlite3.connect('userlog.db')
+    c = conn.cursor()
+    c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(q,currentDateTime))
+    conn.commit()
+    c.close()
+    conn.close()
     return redirect(url_for('login'))
 
 @app.route("/transfer",methods=["GET","POST"])
