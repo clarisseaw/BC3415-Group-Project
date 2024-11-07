@@ -56,7 +56,8 @@ def register():
 def userlog():
     # Check if this is a POST request to get username
     username = session.get('username')
-
+    if not username:
+        return "Username not found", 400
     # Open a connection and insert the log entry
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
@@ -68,10 +69,10 @@ def userlog():
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
         c.execute('SELECT * FROM user')
-        rows = c.fetchall()
-
-    # Format records for display
-    r = "".join([str(row) + "<br>" for row in rows])
+        r=""
+        for row in c:
+            print(row)
+            r = r + str(row)
 
     return render_template("userlog.html", r=r)
 
