@@ -24,9 +24,8 @@ def create_user_table():
         c.execute('''
             CREATE TABLE IF NOT EXISTS user (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT NOT NULL,
-                action TEXT NOT NULL,
-                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                name TEXT NOT NULL,
+                timestamp TEXT NOT NULL
             )
         ''')
         conn.commit()
@@ -75,11 +74,8 @@ def userlog():
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
         currentDateTime = datetime.datetime.now()
-        c.execute('INSERT INTO userlog (username, action, timestamp) VALUES (?, ?, ?)', 
-        (username, "viewed_money_transfer", currentDateTime))
+        c.execute('INSERT INTO user (name, timestamp) VALUES (?, ?)', (username, currentDateTime))
         conn.commit()
-        for action in actions:
-            print(f"Action: {action[0]}, Timestamp: {action[1]}")
 
     # Retrieve all records from the 'user' table
     with sqlite3.connect('userlog.db') as conn:
