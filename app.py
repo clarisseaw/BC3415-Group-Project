@@ -69,27 +69,33 @@ def register():
 
 @app.route("/userlog", methods=["GET", "POST"])
 def userlog():
-    username = session.get('username')
-    # Open a connection and insert the log entry
-    with sqlite3.connect('userlog.db') as conn:
-        c = conn.cursor()
-        currentDateTime = datetime.datetime.now()
-        c.execute('INSERT INTO user (name, timestamp) VALUES (?, ?)', (username, currentDateTime))
-        conn.commit()
+    try:
+        username = session.get('username')
+        if not username:
+            return "Username not found", 400
+        
+        # Open a connection and insert the log entry
+        with sqlite3.connect('userlog.db') as conn:
+            c = conn.cursor()
+            currentDateTime = datetime.datetime.now()
+            c.execute('INSERT INTO user (name, timestamp) VALUES (?, ?)', (username, currentDateTime))
+            conn.commit()
 
-    # Retrieve all records from the 'user' table
-    with sqlite3.connect('userlog.db') as conn:
-        c = conn.cursor()
-        c.execute('SELECT * FROM user')
-        r=""
-        for row in c:
-            print(row)
-            r = r + str(row)
-        conn.commit()
-        c.close()
-        conn.close()
+        # Retrieve all records from the 'user' table
+        with sqlite3.connect('userlog.db') as conn:
+            c = conn.cursor()
+            c.execute('SELECT * FROM user')
+            r = ""
+            for row in c.fetchall():
+                print(row)
+                r += str(row) + "<br>"
 
-    return render_template("userlog.html", r=r)
+        return render_template("userlog.html", r=r)
+    except Exception as e:
+        print("Error in userlog:", e)  # This will show the specific error message in your console or logs
+        return f"An error occurred in userlog: {e}", 500
+
+
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
