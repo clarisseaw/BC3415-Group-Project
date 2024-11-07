@@ -70,7 +70,6 @@ def register():
 @app.route("/userlog", methods=["GET", "POST"])
 def userlog():
     username = session.get('username')
-    
     # Open a connection and insert the log entry
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
@@ -82,12 +81,12 @@ def userlog():
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
         c.execute('SELECT * FROM user')
-        r = ""
-        for row in c.fetchall():
-            if row[0] == username:
-                print(row)
-                r += str(row) + "<br>"
-            else:
+        logs = c.fetchall()
+
+        # Loop through all logs and filter only the current user's logs
+        for row in logs:
+            if row[0] == username:  # Only show logs where the username matches
+                print(row) 
                 r += str(row) + "<br>"
 
     return render_template("userlog.html", r=r)
