@@ -81,10 +81,11 @@ def userlog():
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
         c.execute('SELECT * FROM user')
-        r = ""
-        for row in c.fetchall():
+        r=""
+        for row in c:
             print(row)
-            r += str(row) + "<br>"
+            r = r + str(row)
+        conn.commit()
         c.close()
         conn.close()
 
