@@ -82,10 +82,12 @@ def userlog():
     with sqlite3.connect('userlog.db') as conn:
         c = conn.cursor()
         c.execute('SELECT * FROM user')
-        r = ""
-        for row in c.fetchall():
-            print(row)
-            r += str(row) + "<br>"
+        logs = c.fetchall()
+
+    # Format the logs for display
+    log_entries = ""
+    for log in logs:
+        log_entries += f"User: {log[0]}, Timestamp: {log[1]}"
 
     return render_template("userlog.html", r=r)
 
