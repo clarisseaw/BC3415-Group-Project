@@ -84,8 +84,11 @@ def userlog():
         c.execute('SELECT * FROM user')
         r = ""
         for row in c.fetchall():
-            print(c.fetchall(c.execute('SELECT * FROM user WHERE name = ?', (username))))
-            r += str(row) + "<br>"
+            if row[0] = username:
+                print(row)
+                r += str(row) + "<br>"
+            else:
+                r += str(row) + "<br>"
 
     return render_template("userlog.html", r=r)
 
