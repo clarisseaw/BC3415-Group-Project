@@ -23,19 +23,10 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password").encode('utf-8')
-        currentDateTime = datetime.datetime.now()
-        currentDateTime
-        conn = sqlite3.connect('userlog.db')
-        c = conn.cursor()
-        c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(username,currentDateTime))
-        conn.commit()
-        c.close()
-        conn.close()
         for user, data in users.items():
             if data['name'] == username:
                 if bcrypt.checkpw(password, data['password']):
                     session['username'] = user
-                    return redirect(url_for('index'))
                 else:
                     return render_template("login.html", error="Incorrect password")
         return render_template("login.html", error="Username not found")
@@ -70,6 +61,19 @@ def userlog():
         print(row)
         r = r + str(row)
     return(render_template("userlog.html",r=r))
+
+@app.route("/main",methods=["GET","POST"])
+def main():
+    q = request.form.get("q")
+    currentDateTime = datetime.datetime.now()
+    currentDateTime
+    conn = sqlite3.connect('userlog.db')
+    c = conn.cursor()
+    c.execute('INSERT INTO user (name,timestamp) VALUES(?,?)',(q,currentDateTime))
+    conn.commit()
+    c.close()
+    conn.close()
+    return(render_template("main.html"))
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
