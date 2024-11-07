@@ -27,6 +27,7 @@ def login():
             if data['name'] == username:
                 if bcrypt.checkpw(password, data['password']):
                     session['username'] = user
+                    return redirect(url_for('index'))
                 else:
                     return render_template("login.html", error="Incorrect password")
         return render_template("login.html", error="Username not found")
