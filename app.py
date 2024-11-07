@@ -18,6 +18,21 @@ app.secret_key = 'its_a_secret'
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
+def create_user_table():
+    with sqlite3.connect('userlog.db') as conn:
+        c = conn.cursor()
+        c.execute('''
+            CREATE TABLE IF NOT EXISTS user (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                timestamp TEXT NOT NULL
+            )
+        ''')
+        conn.commit()
+
+# Call this function to create the table on startup
+create_user_table()
+
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
