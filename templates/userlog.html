@@ -76,14 +76,15 @@
 </head>
 <body>
     <div class="container">
-        <h2>User History : </h2>
-        <h2>Odd numbers in numbering are logins</h2>
-        <h3>Even numbers in numberings are logouts</h3>
-        <h4>Please contact 1234 5678 if you did not login at above timing</h4>
+        <h2>User History</h2>
+        <h4>Note: </h4>
+        <h4>Odd numbers in numbering are logins</h4>
+        <h4>Even numbers in numberings are logouts</h4>
+        <h4>Please contact 1234 5678 if you did not login at one of above timings</h4>
         <p>{{ r | safe }}</p>
 
         <form action="/index" method="post">
-            <button type="submit" class="main-button">Main</button>
+            <button type="submit" class="main-button">Main</button><br>
         </form>
         <form action="/logout" method="post">
             <button type="submit" class="main-button">Log Out</button>
