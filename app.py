@@ -65,6 +65,12 @@ def userlog():
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
+    username = session.get('username')
+
+    if username in users:
+        display_name = users[username]['name']
+        return render_template("index.html", username=display_name)
+
     q = request.form.get("q")
     currentDateTime = datetime.datetime.now()
     currentDateTime
@@ -74,7 +80,7 @@ def index():
     conn.commit()
     c.close()
     conn.close()
-    return redirect(url_for('login'))
+    return(render_template("index.html"))
 
 @app.route("/transfer",methods=["GET","POST"])
 def transfer():
