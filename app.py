@@ -84,11 +84,8 @@ def userlog():
         c.execute('SELECT * FROM user')
         r = ""
         for row in c.fetchall():
-            # Check if the log entry belongs to the logged-in user
-            if row[0] == username:  # row[0] is the username in the log
-                print(row)  # Print the log entry in the console for debugging
-                r += f"User: {row[0]}, Timestamp: {row[1]}<br>"  # Display the log on the webpage
-
+            print(c.fetchall(c.execute('SELECT * FROM user WHERE name = ?', (username,))))
+            r += str(row) + "<br>"
 
     return render_template("userlog.html", r=r)
 
