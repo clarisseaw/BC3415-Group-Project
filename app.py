@@ -71,8 +71,6 @@ def register():
 def userlog():
     try:
         username = session.get('username')
-        if not username:
-            return "Username not found", 400
         
         # Open a connection and insert the log entry
         with sqlite3.connect('userlog.db') as conn:
@@ -88,16 +86,9 @@ def userlog():
             r = ""
             for row in c.fetchall():
                 print(row)
-                r += str(row) + "<br>"
+                r += str(row) + <br>
 
         return render_template("userlog.html", r=r)
-    except Exception as e:
-        print("Error in userlog:", e)  # This will show the specific error message in your console or logs
-        return f"An error occurred in userlog: {e}", 500
-
-
-
-
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
